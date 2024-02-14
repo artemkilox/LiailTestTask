@@ -13,67 +13,52 @@ const data = {
         {"id": 10, "head": 8,   "name": "Слепок челюсти",               "node": 0, "price": 500.0,  "sorthead": 20}
     ]
 }
-// let arr = []
-// arr.push([])
-// arr.push([])
-// arr[0].push(1)
-// arr[0].push(2)
-// arr[1].push(3)
-// arr[1].push(4)
-// console.log(arr)
-let headsArr = []
-data.services.map( item => {
-    if(headsArr.indexOf(item.head) === -1){
-        headsArr.push(item.head)
+let htmlLoaded = false
+const setHtmlList = () => {
+    data.services.sort((a, b) => parseFloat(a.sorthead) - parseFloat(b.sorthead));
+    let html = ''
+    const setItems = (head) => {
+        data.services.map( item => {
+            if(item.head === head){
+                if(item.node === 1){
+                    html += '<label class="container">' +
+                        '<input id="item' + item.id + '" class="checkbox" type="checkbox"/>' +
+                        '<span class="container-label">'
+                        + item.name
+                        + '</span>' +
+                        '<div id="container' + item.id + '" class="container-items closed">'
+                    return setItems(item.id)
+                } else if(item.node === 0){
+                    return html += "<div class='item'>" + item.name + ' (' + item.price + '₽)' + '</div>'
+                }
+            }
+        })
+        html += '</div></label>'
     }
-})
-console.log(headsArr)
-let htmlArr = []
-headsArr.map(item => {
-    htmlArr.push([])
-})
-// console.log(htmlArr)
-data.services.map( item => {
-    htmlArr[headsArr.indexOf(item.head)].push(item.id)
-})
-// console.log(htmlArr)
-let finalArr = []
-for(let i = 0 ; i < headsArr.length; i++){
-    finalArr.push([])
-    finalArr[i].push(headsArr[i], htmlArr[i])
+    setItems(null)
+    wrapper.innerHTML = html
+    htmlLoaded = true
 }
-// console.log(finalArr)
-let html = ''
-const setItems = (arr, item) => {
-    console.log(item)
-    if(headsArr.indexOf(item.id) !== -1){
-        console.log(arr.filter(subItem => subItem.id !== item.id))
-        // setItems(arr.filter(subItem => subItem.id !== item.id), item)
-    } else if(headsArr.indexOf(item.id) === -1){
-        return item.name
-    }
+const setListeners = () => {
+    let headers = []
+    data.services.map(item => {
+        if(headers.indexOf(item.head) === -1){
+            headers.push(item.head)
+        }
+    })
+    headers.shift()
+    headers.map(header => {
+        let checkbox = document.getElementById('item' + header)
+        let container = document.getElementById('container' + header)
+        checkbox.addEventListener('change', () => {
+            if(checkbox.checked === true){
+                container.classList.remove('closed')
+            } else if(checkbox.checked === false){
+                container.classList.add('closed')
+            }
+        })
+    })
 }
-data.services.map( item => {
-    html += setItems(data.services, item)
-})
-// console.log(html)
-// data.services.map( item => {
-//     if(headsArr.indexOf(item.id) !== -1){
-//         if(item.head === null){
-//
-//         }
-//     }
-//     data.services.map(subItem => {
-//         if(subItem.head === item.id){
-//
-//         }
-//     })
-// })
-
-
-
-
-
-
-
-
+setHtmlList()
+if(htmlLoaded)
+    setListeners()

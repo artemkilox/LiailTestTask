@@ -2,20 +2,38 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: Montserrat;
 }
 .content-wrapper{
     margin-left: 50px;
     margin-top: 50px;
+    width: 500px;
 }
-.container{
-    /*margin-left: 15px;*/
+.container:before{
+    margin-left: -9px;
+    content: '>';
 }
 .container-label{
-
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 2px;
+    padding: 5px;
+    transition: .5s;
+}
+.container-label:hover{
+    background: linear-gradient(90deg, rgba(88,114,227,0.5) 0%, rgba(88,114,227,0) 100%);
 }
 .container-items{
     margin-left: 30px;
+    transition: .2s;
+}
+.closed{
+    display: none;
 }
 .item{
-
+    margin-bottom: 2px;
+    padding: 5px;
+}
+.checkbox{
+    display: none;
 }
